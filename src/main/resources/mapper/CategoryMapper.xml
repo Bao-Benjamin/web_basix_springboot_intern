@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bao.web_java_pt1.mapper.CategoryMapper">
+
+<select id="findCategoryByID" resultType="com.bao.web_java_pt1.entity.Category">
+		SELECT id, name
+		FROM category as c
+		Where c.id = #{id}
+	</select>
+</mapper>

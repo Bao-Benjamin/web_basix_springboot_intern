@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bao.web_java_pt1.mapper.PlantMapper">
+
+    <resultMap id="PlantResultMap" type="com.bao.web_java_pt1.entity.Plant">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+        <result property="plantDate" column="plant_date"/>
+        <result property="img" column="img"/>
+        <result property="quantity" column="quantity"/>
+        <result property="description" column="description"/>
+        <association property="category" javaType="com.bao.web_java_pt1.entity.Category">
+            <id property="id" column="category_id"/>
+            <result property="name" column="category_name"/>
+        </association>
+    </resultMap>
+
+    <select id="getAllPlants" resultMap="PlantResultMap">
+        SELECT p.id, p.name, p.price, p.plant_date, p.img, p.quantity, p.description,
+               c.id AS category_id, c.name AS category_name
+        FROM plant p
+        LEFT JOIN category c ON p.category_id = c.id
+    </select>
+
+    <select id="findPlantByID" resultMap="PlantResultMap">
+        SELECT p.id, p.name, p.price, p.plant_date, p.img, p.quantity, p.description,
+               c.id AS category_id, c.name AS category_name
+        FROM plant p
+        LEFT JOIN category c ON p.category_id = c.id
+        WHERE p.id = #{id}
+    </select>
+
+    <select id="findPlantByName" parameterType="String" resultMap="PlantResultMap">
+        SELECT p.id, p.name, p.price, p.plant_date, p.img, p.quantity, p.description,
+               c.id AS category_id, c.name AS category_name
+        FROM plant p
+        LEFT JOIN category c ON p.category_id = c.id
+        WHERE p.name = #{name}
+    </select>
+
+    <insert id="insertPlant" parameterType="com.bao.web_java_pt1.entity.Plant"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO plant (name, price, plant_date, img, quantity, description, category_id)
+        VALUES (#{name}, #{price}, #{plantDate}, #{img}, #{quantity}, #{description}, #{category.id})
+    </insert>
+
+    <update id="updatePlant"> 
+        UPDATE plant 
+        <set>
+            <if test="req.price != null">price = #{req.price},</if>
+            <if test="req.plantDate != null">plant_date = #{req.plantDate},</if>
+            <if test="req.description != null">description = #{req.description},</if>
+            <if test="req.img != null">img = #{req.img},</if>
+            <if test="req.category != null and req.category.id != null">category_id = #{req.category.id},</if>
+            <if test="req.quantity != null">quantity = #{req.quantity},</if>
+        </set>
+        WHERE name = #{name} 
+    </update>
+    
+    <delete id="deletePlant" parameterType="string">
+        DELETE FROM plant
+        WHERE name = #{name}
+    </delete>
+    <select id="searchPlants" parameterType="String" resultMap="PlantResultMap">
+        SELECT p.id, p.name, p.price, p.plant_date, p.img, p.quantity, p.description,
+               c.id AS category_id, c.name AS category_name
+        FROM plant p
+        LEFT JOIN category c ON p.category_id = c.id
+        <where>
+        	<if test="keyword != null and keyword != ''">
+        		LOWER(p.name) LIKE LOWER(CONCAT('%',#{keyword}, '%'))
+        	</if>
+        	<if test="category != null and category != ''">
+        		AND LOWER(c.name) = LOWER(#{category})
+        	</if>
+        	
+        </where>
+    </select>
+    <select id="getPlantsSorted" resultMap="PlantResultMap">
+        SELECT p.id, p.name, p.price, p.plant_date, p.img, p.quantity, p.description,
+               c.id AS category_id, c.name AS category_name
+        FROM plant p
+        LEFT JOIN category c ON p.category_id = c.id
+        ORDER BY ${sortByField} ${sortOrder}
+    </select>
+     <select id="findMostExpensivePlant" resultMap="PlantResultMap">
+        SELECT p.id, p.name, p.price, p.plant_date, p.img, p.quantity, p.description,
+               c.id AS category_id, c.name AS category_name
+        FROM plant p
+        LEFT JOIN category c ON p.category_id = c.id
+        ORDER BY p.price desc
+        limit 1
+    </select>
+    <select id="calculateInventoryValue" resultType="Double">
+    SELECT SUM(price* quantity)
+    from plant
+    </select>
+    
+    <select id="getPlantsByCategory" resultMap="PlantResultMap">
+    	SELECT p.id, p.name, p.price, p.plant_date, p.img, p.quantity, p.description,
+               c.id AS category_id, c.name AS category_name
+        from plant p
+        left join category c on p.category_id = c.id 
+        where c.name = #{category}
+    </select>
+    
+    <select id="countTotalPlants" resultType="long">
+    	SELECT COUNT(id) FROM plant
+    </select>
+    <select id="countPlantsByCategory" resultType="map">
+    	SELECT c.name as categoryName ,count(p.id) as total
+		from plant p
+		left join category c on p.category_id = c.id
+		group by p.category_id
+    </select>
+    <select id="findLatestPlant" resultMap="PlantResultMap">
+    	select p.name, p.created_at
+		from plant p
+		order by p.created_at desc
+		limit 1
+    </select>
+    
+    
+    
+
+</mapper>
