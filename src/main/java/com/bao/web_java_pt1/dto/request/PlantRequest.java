@@ -13,7 +13,7 @@ public class PlantRequest {
 	private String img;
 	private Integer  quantity;
 	private String description;
-	private int category;
+	private String category;
 
 	public String getName() {
 		return name;
@@ -51,10 +51,10 @@ public class PlantRequest {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public int getCategory() {
+	public String getCategory() {
 		return category;
 	}
-	public void getCategory(int category) {
+	public void getCategory(String category) {
 		this.category = category;
 	}
 	@Override

@@ -4,17 +4,44 @@ import java.util.List;
 
 public class ListPlantResponseAPI {
 	private String messageError;
-	private List<PlantDTO> plantDTO;
 	private int ErrorCode;
+	private List<PlantDTO> plantDTO;
+	private long totalItems;
+	private int totalPages;
+	private int page;
 	
 	public ListPlantResponseAPI() {
 		super();
 	}
-	public ListPlantResponseAPI(String messageError, List<PlantDTO> plantDTO, int errorCode) {
+	
+	public ListPlantResponseAPI(String messageError, int errorCode, List<PlantDTO> plantDTO, int totalItems,
+			int totalPages, int page) {
 		super();
 		this.messageError = messageError;
-		this.plantDTO = plantDTO;
 		ErrorCode = errorCode;
+		this.plantDTO = plantDTO;
+		this.totalItems = totalItems;
+		this.totalPages = totalPages;
+		this.page = page;
+	}
+
+	public long getTotalItems() {
+		return totalItems;
+	}
+	public void setTotalItems(long totalItems) {
+		this.totalItems = totalItems;
+	}
+	public int getTotalPages() {
+		return totalPages;
+	}
+	public void setTotalPages(int totalPages) {
+		this.totalPages = totalPages;
+	}
+	public int getPage() {
+		return page;
+	}
+	public void setPage(int page) {
+		this.page = page;
 	}
 	public String getMessageError() {
 		return messageError;

@@ -14,7 +14,8 @@ import com.bao.web_java_pt1.entity.Plant;
 public interface PlantMapper {
 	
 	
-	List<Plant> getAllPlants();
+	List<Plant> getAllPlants(@Param("limit") int limit, @Param("offset") int offset);
+	long countAllPlants();
 	
 	void insertPlant(Plant plant) ;
 	
@@ -24,7 +25,11 @@ public interface PlantMapper {
 
 	int deletePlant(String name);
 	
-	List<Plant> searchPlants(@Param("keyword")String keyword, @Param("category") String category);
+	List<Plant> searchPlants(@Param("keyword")String keyword, @Param("category") String category, @Param("sortByField") String sortByField, 
+			@Param("sortOrder") String sortOrder, @Param("limit") int limit, @Param("offset") int offset);
+	
+	Long countSearchPlants(@Param("keyword") String keyword, @Param("category") String category);
+	
 	List<Plant> getPlantsSorted(@Param("sortByField") String sortByField, @Param("sortOrder") String sortOrder);
 	Plant findMostExpensivePlant();
 	double calculateInventoryValue();

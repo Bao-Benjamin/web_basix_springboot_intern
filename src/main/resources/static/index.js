@@ -1,345 +1,558 @@
-// 1. Khởi tạo mảng dữ liệu ban đầu với ít nhất 20 cây cảnh
-let plants = JSON.parse(localStorage.getItem("plants")) || [
-  { id: 1, name: "Sen đá", category: "Cây trong nhà", price: 85000, date: "2026-01-10", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1611735341450-74d61e660ad2?w=400&q=80" },
-  { id: 2, name: "Trầu bà", category: "Cây trong nhà", price: 120000, date: "2026-02-15", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1593691509543-c55fb32d8de5?w=400&q=80" },
-  { id: 3, name: "Hoa hồng", category: "Cây ngoài trời", price: 250000, date: "2026-03-03", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?w=400&q=80" },
-  { id: 4, name: "Xoài cát Hòa Lộc", category: "Cây ăn quả", price: 450000, date: "2026-04-01", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=400&q=80" },
-  { id: 5, name: "Xương rồng", category: "Cây ngoài trời", price: 60000, date: "2026-05-20", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80" },
-  { id: 6, name: "Lưỡi hổ", category: "Cây trong nhà", price: 140000, date: "2026-01-12", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?w=400&q=80" },
-  { id: 7, name: "Kim tiền", category: "Cây trong nhà", price: 180000, date: "2026-02-18", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=400&q=80" },
-  { id: 8, name: "Lan Ý", category: "Cây trong nhà", price: 135000, date: "2026-02-25", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=400&q=80" },
-  { id: 9, name: "Cây Bàng Singapore", category: "Cây trong nhà", price: 320000, date: "2026-03-10", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1597055181300-e3633a207518?w=400&q=80" },
-  { id: 10, name: "Hoa mười giờ", category: "Cây ngoài trời", price: 30000, date: "2026-04-05", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1516245834210-c4c142787335?w=400&q=80" },
-  { id: 11, name: "Cây khế cảnh", category: "Cây ăn quả", price: 600000, date: "2026-05-15", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=400&q=80" },
-  { id: 12, name: "Ổi Mỹ mini", category: "Cây ăn quả", price: 350000, date: "2026-06-01", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=400&q=80" },
-  { id: 13, name: "Cây lựu lùn", category: "Cây ăn quả", price: 500000, date: "2026-03-20", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=400&q=80" },
-  { id: 14, name: "Cây tùng la hán", category: "Cây ngoài trời", price: 1200000, date: "2026-01-05", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80" },
-  { id: 15, name: "Cây hoa giấy", category: "Cây ngoài trời", price: 280000, date: "2026-02-28", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?w=400&q=80" },
-  { id: 16, name: "Cây vạn lộc", category: "Cây trong nhà", price: 95000, date: "2026-04-12", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=400&q=80" },
-  { id: 17, name: "Cây hạnh phúc", category: "Cây trong nhà", price: 220000, date: "2026-05-02", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1597055181300-e3633a207518?w=400&q=80" },
-  { id: 18, name: "Cây phong ba", category: "Cây ngoài trời", price: 400000, date: "2026-06-10", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80" },
-  { id: 19, name: "Cây chanh vàng", category: "Cây ăn quả", price: 190000, date: "2026-05-22", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=400&q=80" },
-  { id: 20, name: "Cây tía tô cảnh", category: "Cây ngoài trời", price: 45000, date: "2026-03-15", description: "Loại cây nhỏ dễ chăm sóc", img: "https://images.unsplash.com/photo-1516245834210-c4c142787335?w=400&q=80" }
-];
 
-// 2. State quản lý ứng dụng
-let currentView = 'grid'; // 'grid' hoặc 'table'
-let currentCategory = 'all';
-let searchQuery = '';
-let currentSort = 'name-asc';
-let currentPage = 1;
-const itemsPerPage = 5;
+// Đường dẫn API từ local của bạn
+const getAllAPI = 'http://localhost:8084/api/plants/';
+const getCategoriesAPI = 'http://localhost:8084/category';
+const createPlantAPI = 'http://localhost:8084/api/plants/';
+const getAllCateAPI = 'http://localhost:8084/category';
 
 // DOM Elements
-const searchInput = document.getElementById('search-input');
-const sortSelect = document.getElementById('sort-select');
-const viewTableBtn = document.getElementById('view-table-btn');
-const viewGridBtn = document.getElementById('view-grid-btn');
-const tableWrap = document.getElementById('table-wrap');
-const gridContainer = document.getElementById('grid-container');
-const tableBody = document.getElementById('table-body');
-const filterPills = document.getElementById('filter-pills');
-const paginationContainer = document.getElementById('khu-phan-trang');
+  const searchInput = document.getElementById('search-input');
+  const sortSelect = document.getElementById('sort-select');
+  const viewTableBtn = document.getElementById('view-table-btn');
+  const viewGridBtn = document.getElementById('view-grid-btn');
+  const tableWrap = document.getElementById('table-wrap');
+  const gridContainer = document.getElementById('grid-container');
+  const tableBody = document.getElementById('table-body');
+  const filterPills = document.getElementById('filter-pills');
+  const paginationContainer = document.getElementById('khu-phan-trang');
 
-const detailModal = document.getElementById('detail-modal');
-const modalImage = document.getElementById('modal-image');
-const modalName = document.getElementById('modal-name');
-const modalCategory = document.getElementById('modal-category');
-const modalPrice = document.getElementById('modal-price');
-const modalDate = document.getElementById('modal-date');
-const modalDescription = document.getElementById('modal-description');
-const closeModalBtn = document.getElementById('close-modal');
+  const detailModal = document.getElementById('detail-modal');
+  const modalImage = document.getElementById('modal-image');
+  const modalName = document.getElementById('modal-name');
+  const modalCategory = document.getElementById('modal-category');
+  const modalPrice = document.getElementById('modal-price');
+  const modalDate = document.getElementById('modal-date');
+  const modalDescription = document.getElementById('modal-description');
+  const closeModalBtn = document.getElementById('close-modal');
 
-const formModal = document.getElementById("form-modal");
-const plantForm = document.getElementById("plant-form");
-const formTitle = document.getElementById("form-title");
-const plantId = document.getElementById("plant-id");
-const plantName = document.getElementById("plant-name");
-const plantCategory = document.getElementById("plant-category");
-const plantPrice = document.getElementById("plant-price");
-const plantDate = document.getElementById("plant-date");
-const plantDescription = document.getElementById("plant-description");
-const plantImg = document.getElementById("plant-img");
-const addBtn = document.querySelector(".btn-primary");
-const closeFormModalBtn = document.getElementById("close-form-modal");
-const cancelFormBtn = document.getElementById("cancel-form");
+  const formModal = document.getElementById("form-modal");
+  const plantForm = document.getElementById("plant-form");
+  const formTitle = document.getElementById("form-title");
+  const plantId = document.getElementById("plant-id");
+  const plantName = document.getElementById("plant-name");
+  const plantCategory = document.getElementById("plant-category");
+  const plantPrice = document.getElementById("plant-price");
+  const plantDate = document.getElementById("plant-date");
+  const plantDescription = document.getElementById("plant-description");
+  const plantImg = document.getElementById("plant-img");
+  const addBtn = document.querySelector("#add-btn");
+  const closeFormModalBtn = document.getElementById("close-form-modal");
+  const cancelFormBtn = document.getElementById("cancel-form");
+  
+  let plants = []
+  let oldPlantName = "";
+  let backendCurrentPage = 1;
+  let backendTotalPages = 1;
+  let backendTotalItems = 0;
+  
+  let currentView = 'grid'; // 'grid' hoặc 'table'
+  let currentCategory = 'all';
+  let searchQuery = '';
+  let currentSort = 'name-asc';
+  let currentPage = 1;
+  const itemsPerPage = 5;
+  let inputSearch ="";
+  let orderField = "";
+  let orderBy = "";
+  
+  let categoryList = [];
 
-// --- CÁC HÀM BỔ TRỢ ---
-function saveToLocalStorage() {
-  localStorage.setItem("plants", JSON.stringify(plants));
+  let categoryChart = null;
+  
+function createPlant(plantRequest) {
+    fetch(createPlantAPI, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(plantRequest)
+    })
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            return response.json();
+        })
+        .then(data => {
+            loadPlantsFromServer(currentPage, itemsPerPage);
+        })
+}
+function loadAllCategory() {
+	plantCategory.innerHTML = '';
+    fetch(getCategoriesAPI)
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            return response.json();
+        })
+        .then(data => {
+            const categories = data.categoryDTO || [];
+			categoryList = categories;
+            console.log("Danh sách Category thực tế:", categories);
+            if (plantCategory) {
+                // Render danh sách các thẻ <option> dựa theo cấu trúc { name: "..." }
+                plantCategory.innerHTML += categories.map(cat => `
+			          <option value="${cat.name}">${cat.name}</option>
+			        `).join('');
+            }
+			//render();
+        })
+        .catch(error => console.error('Lỗi lấy danh sách Category:', error));
+}
+function loadPlantsFromServer(pageRequest = 1, limit = 2) {
+    const urlWithPaging = `${getAllAPI}?page=${currentPage}&size=${limit}`;
+    fetch(urlWithPaging)
+        .then(response => {
+            // Kiểm tra nếu phản hồi từ server không thành công (ví dụ: lỗi 404, 500)
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json(); // Chuyển đổi dữ liệu nhận được thành JSON
+        })
+        .then(data => {
+            // Truy cập vào mảng danh sách nằm trong thuộc tính 'plantDTO'
+            plants = data.plantDTO || [];
+
+            backendTotalItems = data.totalItems || 0;
+            backendTotalPages = data.totalPages || 0;
+            //currentPage = data.page || pageRequest;
+            console.log("Trang hiện tại vừa cập nhật thành công:", currentPage);
+            render();
+        })
+        .catch(error => {
+            // Xử lý lỗi nếu có (lỗi kết nối, lỗi parse JSON,...)
+            console.error('Có lỗi xảy ra khi gọi API:', error);
+        });
 }
 
-function openDetailModal(plant) {
-  modalImage.src = plant.img || "";
-  modalImage.alt = plant.name;
-  modalName.textContent = plant.name;
-  modalCategory.textContent = plant.category;
-  modalPrice.textContent = plant.price.toLocaleString() + " VNĐ";
-  modalDate.textContent = formatDate(plant.date);
-  modalDescription.textContent = plant.description || "Không có mô tả";
-  detailModal.style.display = "flex";
+function deletePlant(name) {
+    const deletePlantAPI = `http://localhost:8084/api/plants/delete/${encodeURIComponent(name)}`
+    fetch(deletePlantAPI, {
+        method: 'DELETE',
+        header: {
+            'Content-Type': 'application/json'
+        }
+
+    })
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`)
+        })
+        .then(data => {
+            loadPlantsFromServer(currentPage, itemsPerPage);
+        })
+}
+function updatePlantToServer(oldName, updatedPlantData) {
+    const updatePlantAPI = `http://localhost:8084/api/plants/update/${encodeURIComponent(oldName)}`
+    fetch(updatePlantAPI,
+        {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedPlantData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            loadPlantsFromServer(currentPage, itemsPerPage)
+        })
+}
+	
+function filterSortSearch(keyword, category, orderBy, fieldName, page = 1, limit = 5){
+	const url = `${getAllAPI}search?keyword=${keyword}&category=${category}&by=${orderBy}&order=${fieldName}&page=${page}&size=${limit}`;
+	
+	fetch(url)
+		.then(response =>{
+			if(!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+			return response.json();
+		})
+		.then(data => {
+		      plants = data.plantDTO || [];	       // Hứng mảng cây tìm được
+		      backendTotalItems = data.totalItems || 0;
+		      backendTotalPages = data.totalPages || 1;
+		      currentPage = data.page || page;        // Cập nhật trang hiện tại
+		      
+		      console.log("Dữ liệu tìm kiếm/phân trang mới:", data);
+		      render(); // Vẽ lại giao diện sau khi đã có dữ liệu mới
+		 })
+		 .catch(error => {
+		     console.error('Có lỗi xảy ra khi gọi API Search:', error);
+		 });
+		
 }
 
-function closeDetailModal() {
-  detailModal.style.display = "none";
-}
+  // --- CÁC HÀM BỔ TRỢ ---
 
-function closeFormModal() {
-  formModal.style.display = "none";
-}
 
-function getBadgeClass(cat) {
-  if (cat === "Cây trong nhà") return "badge-indoor";
-  if (cat === "Cây ngoài trời") return "badge-outdoor";
-  return "badge-fruit";
-}
+  function renderChart() {
 
-function formatDate(dateStr) {
-  if (!dateStr) return "";
-  const d = new Date(dateStr);
-  return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
-}
+      const categoryCount = {};
 
-function validateForm() {
-  let valid = true;
-  document.querySelectorAll(".form-error").forEach(e => e.textContent = "");
+      plants.forEach(plant => {
+          categoryCount[plant.category] =
+              (categoryCount[plant.category] || 0) + 1;
+      });
 
-  if (plantName.value.trim() === "") {
-    document.getElementById("name-error").textContent = "Tên không được để trống";
-    valid = false;
+      const labels = Object.keys(categoryCount);
+      const data = Object.values(categoryCount);
+
+      const ctx = document.getElementById("categoryChart");
+
+      if(categoryChart){
+          categoryChart.destroy();
+      }
+
+      categoryChart = new Chart(ctx,{
+          type:"doughnut",
+          data:{
+              labels:labels,
+              datasets:[{
+                  data:data
+              }]
+          },
+          options:{
+              responsive:true,
+              plugins:{
+                  legend:{
+                      position:"bottom"
+                  }
+              }
+          }
+      });
+
   }
-  if (Number(plantPrice.value) <= 0) {
-    document.getElementById("price-error").textContent = "Giá phải lớn hơn 0";
-    valid = false;
+  function openDetailModal(plant) {
+    modalImage.src = plant.img || "";
+    modalImage.alt = plant.name;
+    modalName.textContent = plant.name;
+    modalCategory.textContent = plant.category;
+    modalPrice.textContent = plant.price.toLocaleString() + " VNĐ";
+    modalDate.textContent = formatDate(plant.plantDate);
+    modalDescription.textContent = plant.description || "Không có mô tả";
+    detailModal.style.display = "flex";
   }
-  if (plantDate.value === "") {
-    document.getElementById("date-error").textContent = "Ngày trồng bắt buộc";
-    valid = false;
+
+  function closeDetailModal() {
+    detailModal.style.display = "none";
   }
-  return valid;
-}
 
-// Hàm chuyển đổi trang toàn cục
-window.changePage = function (page) {
-  currentPage = page;
-  render();
-};
+  function closeFormModal() {
+    formModal.style.display = "none";
+  }
 
-// --- HÀM RENDER CHÍNH ---
-function render() {
-  // LỌC DỮ LIỆU
-  let filtered = plants.filter(plant => {
-    const matchCategory = currentCategory === 'all' || plant.category === currentCategory;
-    const matchSearch = plant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        plant.category.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchCategory && matchSearch;
-  });
+  function getBadgeClass(cat) {
+    if (cat === "Cây trong nhà") return "badge-indoor";
+    if (cat === "Cây ngoài trời") return "badge-outdoor";
+    return "badge-fruit";
+  }
 
-  // SẮP XẾP
-  filtered.sort((a, b) => {
-    if (currentSort === 'name-asc') return a.name.localeCompare(b.name, 'vi');
-    if (currentSort === 'name-desc') return b.name.localeCompare(a.name, 'vi');
-    if (currentSort === 'price-asc') return a.price - b.price;
-    if (currentSort === 'price-desc') return b.price - a.price;
-    if (currentSort === 'date-desc') return new Date(b.date) - new Date(a.date);
-    if (currentSort === 'date-asc') return new Date(a.date) - new Date(b.date);
-    return 0;
-  });
+  function formatDate(dateStr) {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+  }
 
-  // PHÂN TRANG
-  const totalItems = filtered.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
-  if (currentPage > totalPages) currentPage = totalPages;
+  function validateForm() {
+    let valid = true;
+    document.querySelectorAll(".form-error").forEach(e => e.textContent = "");
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedItems = filtered.slice(startIndex, startIndex + itemsPerPage);
+    if (plantName.value.trim() === "") {
+      document.getElementById("name-error").textContent = "Tên không được để trống";
+      valid = false;
+    }
+    if (Number(plantPrice.value) <= 0) {
+      document.getElementById("price-error").textContent = "Giá phải lớn hơn 0";
+      valid = false;
+    }
+    if (plantDate.value === "") {
+      document.getElementById("date-error").textContent = "Ngày trồng bắt buộc";
+      valid = false;
+    }
+    return valid;
+  }
 
-  // HIỂN THỊ VIEW GIAO DIỆN
-  if (currentView === 'table') {
-    tableWrap.style.display = 'block';
-    gridContainer.style.display = 'none';
 
-    tableBody.innerHTML = paginatedItems.map((plant, index) => `
-      <tr>
-        <td>${startIndex + index + 1}</td>
-        <td><span class="plant-name" data-id="${plant.id}">${plant.name}</span></td>
-        <td><span class="badge ${getBadgeClass(plant.category)}">${plant.category}</span></td>
-        <td>${plant.price.toLocaleString()}</td>
-        <td>${formatDate(plant.date)}</td>
-        <td class="actions">
-          <button class="btn btn-sm btn-outline edit-btn" data-id="${plant.id}">✏️ Sửa</button>
-          <button class="btn btn-sm btn-danger delete-btn" data-id="${plant.id}">🗑️ Xóa</button>
-        </td>
-      </tr>
-    `).join('');
-  } else {
-    tableWrap.style.display = 'none';
-    gridContainer.style.display = 'grid';
 
-    gridContainer.innerHTML = paginatedItems.map(plant => `
-      <div class="plant-card" data-id="${plant.id}">
-        <img class="card-img" src="${plant.img}" alt="${plant.name}" />
-        <div class="card-body">
-          <div class="card-name">${plant.name}</div>
-          <span class="badge ${getBadgeClass(plant.category)}">${plant.category}</span>
-          <div class="card-price">${plant.price.toLocaleString()} VNĐ</div>
-          <div class="card-date">🗓 ${formatDate(plant.date)}</div>
-          <div class="actions" style="margin-top:.75rem;">
+  // --- HÀM RENDER CHÍNH ---
+  function render() {
+
+    // Thanh category
+	categoryRender=`<span class="pill active" data-category="all">Tất cả</span>`;
+	for( let cate of categoryList){
+		categoryRender += `
+			<span class="pill" data-category="${cate.name}">${cate.name}</span>
+		`
+	}
+	filterPills.innerHTML = categoryRender;
+
+    // HIỂN THỊ VIEW GIAO DIỆN
+    if (currentView === 'table') {
+      tableWrap.style.display = 'block';
+      gridContainer.style.display = 'none';
+
+      tableBody.innerHTML = plants.map((plant, index) => `
+        <tr>
+          <td>${(currentPage - 1) * itemsPerPage + index + 1}</td>
+          <td><span class="plant-name" data-id="${plant.id}">${plant.name}</span></td>
+          <td><span class="badge ${getBadgeClass(plant.category)}">${plant.category}</span></td>
+          <td>${plant.price.toLocaleString()}</td>
+          <td>${formatDate(plant.plantDate)}</td>
+          <td class="actions">
             <button class="btn btn-sm btn-outline edit-btn" data-id="${plant.id}">✏️ Sửa</button>
             <button class="btn btn-sm btn-danger delete-btn" data-id="${plant.id}">🗑️ Xóa</button>
+          </td>
+        </tr>
+      `).join('');
+    } else {
+      tableWrap.style.display = 'none';
+      gridContainer.style.display = 'grid';
+
+      gridContainer.innerHTML = plants.map(plant => `
+        <div class="plant-card" data-id="${plant.id}">
+          <img class="card-img" src="${plant.img}" alt="${plant.name}" />
+          <div class="card-body">
+            <div class="card-name">${plant.name}</div>
+            <span class="badge ${getBadgeClass(plant.category)}">${plant.category}</span>
+            <div class="card-price">${plant.price.toLocaleString()} VNĐ</div>
+            <div class="card-date">🗓 ${formatDate(plant.plantDate)}</div>
+            <div class="actions" style="margin-top:.75rem;">
+              <button class="btn btn-sm btn-outline edit-btn" data-id="${plant.id}">✏️ Sửa</button>
+              <button class="btn btn-sm btn-danger delete-btn" data-id="${plant.id}">🗑️ Xóa</button>
+            </div>
           </div>
         </div>
-      </div>
-    `).join('');
-  }
-
-  // RENDER THANH PHÂN TRANG
-  let paginationHTML = `<button ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(${currentPage - 1})">← Prev</button>`;
-  for (let i = 1; i <= totalPages; i++) {
-    paginationHTML += `<button class="${currentPage === i ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
-  }
-  paginationHTML += `<button ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">Next →</button>`;
-  paginationHTML += `<span class="page-info">Trang ${currentPage} / ${totalPages} · Tổng ${totalItems} cây</span>`;
-
-  paginationContainer.innerHTML = paginationHTML;
-}
-
-// --- LẮNG NGHE SỰ KIỆN (EVENT LISTENERS) --- Nhóm ra ngoài render()
-
-// Sự kiện click mở Modal chi tiết (Ủy quyền sự kiện để tối ưu)
-document.addEventListener("click", (e) => {
-  const targetName = e.target.closest(".plant-name");
-  const targetCard = e.target.closest(".plant-card");
-  
-  // Nếu nhấn trúng nút Sửa hoặc Xóa thì dừng lại không mở chi tiết
-  if (e.target.classList.contains("edit-btn") || e.target.classList.contains("delete-btn")) {
-    return;
-  }
-
-  const element = targetName || targetCard;
-  if (element) {
-    const id = Number(element.dataset.id);
-    const plant = plants.find(p => p.id === id);
-    if (plant) openDetailModal(plant);
-  }
-});
-
-// Sự kiện click nút Thêm cây mới
-if (addBtn) {
-  addBtn.addEventListener("click", () => {
-    formTitle.textContent = "Thêm cây";
-    plantForm.reset();
-    plantId.value = "";
-    formModal.style.display = "flex";
-  });
-}
-
-// Sự kiện Submit Form (Thêm / Sửa)
-plantForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  if (!validateForm()) return;
-
-  const plantData = {
-    id: plantId.value ? Number(plantId.value) : Date.now(),
-    name: plantName.value.trim(),
-    category: plantCategory.value,
-    price: Number(plantPrice.value),
-    date: plantDate.value,
-    description: plantDescription.value,
-    img: plantImg.value || "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80"
-  };
-
-  if (plantId.value) {
-    const index = plants.findIndex(p => p.id === Number(plantId.value));
-    if (index !== -1) plants[index] = plantData;
-  } else {
-    plants.push(plantData);
-  }
-
-  saveToLocalStorage();
-  formModal.style.display = "none";
-  render();
-});
-
-// Sự kiện Tìm Kiếm
-searchInput.addEventListener('input', (e) => {
-  searchQuery = e.target.value;
-  currentPage = 1;
-  render();
-});
-
-// Sự kiện Sắp Xếp
-sortSelect.addEventListener('change', (e) => {
-  currentSort = e.target.value;
-  render();
-});
-
-// Sự kiện bộ lọc Danh Mục (Pills)
-filterPills.addEventListener('click', (e) => {
-  if (e.target.classList.contains('pill')) {
-    document.querySelectorAll('#filter-pills .pill').forEach(p => p.classList.remove('active'));
-    e.target.classList.add('active');
-    currentCategory = e.target.getAttribute('data-category');
-    currentPage = 1;
-    render();
-  }
-});
-
-// Sự kiện thay đổi View Giao diện (Grid / Table)
-viewTableBtn.addEventListener('click', () => {
-  viewTableBtn.classList.add('active');
-  viewGridBtn.classList.remove('active');
-  currentView = 'table';
-  render();
-});
-
-viewGridBtn.addEventListener('click', () => {
-  viewGridBtn.classList.add('active');
-  viewTableBtn.classList.remove('active');
-  currentView = 'grid';
-  render();
-});
-
-// Quản lý sự kiện Click XÓA và SỬA toàn cục
-document.addEventListener("click", (e) => {
-  // XÓA
-  if (e.target.classList.contains("delete-btn")) {
-    e.stopPropagation();
-    const id = Number(e.target.dataset.id);
-    if (confirm("Xóa cây này?")) {
-      plants = plants.filter(p => p.id !== id);
-      saveToLocalStorage();
-      render();
+      `).join('');
     }
+
+    // RENDER THANH PHÂN TRANG
+	  const range = [];
+	  const delta = 2;
+	  let last ;
+	  const rangeWithDot= [];
+	  for(let i = 1 ; i<= backendTotalPages; i++){
+		if(i === 1 || i === backendTotalPages || (currentPage-delta <= i && i <= currentPage+delta))
+		{
+			range.push(i);
+		}  
+	  }
+	  
+	  for(let i of range){
+		if(last){
+			if(i-last === 2){
+				rangeWithDot.push(last+1)
+			}else if(i-last > 2){
+				rangeWithDot.push("...")
+			}
+		}
+		rangeWithDot.push(i);
+		last = i;
+	  }
+	  
+	  
+      let paginationHTML = "";
+	  
+	  paginationHTML += 
+	  	  `<button class="page-btn" ${currentPage === 1 ? "disabled" : ""} data-page= "${currentPage-1}">  ← Prev </button>`;
+		  
+      rangeWithDot.forEach(page => {
+		if(page === '...'){
+			paginationHTML += `<span class="page-dots">${page}</span>`;
+		}else {
+			paginationHTML += `<button class="page-btn" ${currentPage == page ? "active" : ""} data-page= "${page}">${page}</button>`
+		}
+		
+	  })
+	  
+	  paginationHTML += 
+	  `<button class="page-btn" ${currentPage === backendTotalPages ? "disabled" : ""} data-page= "${currentPage+1}"> Next → </button>`;
+	  console.log(currentPage);
+      paginationContainer.innerHTML = paginationHTML;
+	  renderChart();
   }
+  
+  paginationContainer.addEventListener("click", (e) => {
+      const btn = e.target.closest(".page-btn");
+      if(!btn) return;
+      const page = Number(btn.dataset.page);
+	  currentPage = page;
+      loadPlantsFromServer(page, itemsPerPage);
 
-  // SỬA
-  if (e.target.classList.contains("edit-btn")) {
-    e.stopPropagation();
-    const id = Number(e.target.dataset.id);
-    const plant = plants.find(p => p.id === id);
-    if (!plant) return;
+  });
+  
+  // --- LẮNG NGHE SỰ KIỆN (EVENT LISTENERS) --- Nhóm ra ngoài render()
 
-    formTitle.textContent = "Sửa cây";
-    plantId.value = plant.id;
-    plantName.value = plant.name;
-    plantCategory.value = plant.category;
-    plantPrice.value = plant.price;
-    plantDate.value = plant.date;
-    plantDescription.value = plant.description || "";
-    plantImg.value = plant.img || "";
+  // Sự kiện click mở Modal chi tiết (Ủy quyền sự kiện để tối ưu)
+  document.addEventListener("click", (e) => {
+    const targetName = e.target.closest(".plant-name");
+    const targetCard = e.target.closest(".plant-card");
+    
+    // Nếu nhấn trúng nút Sửa hoặc Xóa thì dừng lại không mở chi tiết
+    if (e.target.classList.contains("edit-btn") || e.target.classList.contains("delete-btn")) {
+      return;
+    }
 
-    formModal.style.display = "flex";
-  }
-});
+    const element = targetName || targetCard;
+    if (element) {
+      const id = Number(element.dataset.id);
+      const plant = plants.find(p => p.id === id);
+      if (plant) openDetailModal(plant);
+    }
+  });
 
-// Đóng Modals
-closeModalBtn.addEventListener('click', closeDetailModal);
-detailModal.addEventListener('click', (e) => {
-  if (e.target === detailModal) closeDetailModal();
-});
-closeFormModalBtn.addEventListener("click", closeFormModal);
-cancelFormBtn.addEventListener("click", closeFormModal);
+  // Sự kiện click nút Thêm cây mới
 
-// Khởi chạy ứng dụng lần đầu khi tải trang
-render();
+    addBtn.addEventListener("click", () => {
+	console.log("click thêm");
+	 // loadAllCategory();
+      formTitle.textContent = "Thêm cây";
+      plantForm.reset();
+      plantId.value = "";
+      formModal.style.display = "flex";
+    });
+
+
+  // Quản lý sự kiện Click XÓA và SỬA toàn cục
+   document.addEventListener("click", (e) => {
+     // XÓA
+     if (e.target.classList.contains("delete-btn")) {
+       e.stopPropagation();
+       const id = Number(e.target.dataset.id);
+       if (confirm("Xóa cây này?")) {
+         plant = plants.filter(p => p.id === id);
+		 console.log(plant[0].name);
+		 deletePlant(plant[0].name);
+        // saveToLocalStorage();
+         render();
+       }
+     }
+
+     // SỬA
+     if (e.target.classList.contains("edit-btn")) {
+       e.stopPropagation();
+       const id = Number(e.target.dataset.id);
+       const plant = plants.find(p => p.id === id);
+       if (!plant) return;
+
+       formTitle.textContent = "Sửa cây";
+       plantId.value = plant.id;
+       plantName.value = plant.name;
+       plantCategory.value = plant.category;
+       plantPrice.value = plant.price;
+       plantDate.value = plant.plantDate;
+       plantDescription.value = plant.description || "";
+       plantImg.value = plant.img || "";
+       oldPlantName = plant.name;
+       formModal.style.display = "flex";
+     }
+   });
+   
+  // Sự kiện Submit Form (Thêm / Sửa)
+  plantForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    const plantData = {
+     // id: plantId.value ? Number(plantId.value) : null,
+      name: plantName.value.trim(),
+      category: plantCategory.value,
+      price: Number(plantPrice.value),
+      date: plantDate.value,
+      description: plantDescription.value,
+      img: plantImg.value || "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80"
+    };
+
+    if (plantId.value) {
+      const index = plants.findIndex(p => p.id === Number(plantId.value));
+      
+	  updatePlantToServer(oldPlantName,plantData)
+    } else {
+		console.log("plantData: ", plantData);
+		createPlant(plantData);
+      
+    }
+
+   
+    formModal.style.display = "none";
+    
+  });
+
+  // Sự kiện Tìm Kiếm
+  searchInput.addEventListener('input', (e) => {
+    inputSearch = e.target.value.trim();
+    currentPage = 1;
+    filterSortSearch(inputSearch, "", "", "", currentPage, itemsPerPage);
+  });
+
+  //thừa thải
+ // searchInput.addEventListener('chane',(e)=>{
+//	filterSortSearch(inputSearch,"","","");
+//  })
+  // Sự kiện Sắp Xếp
+  sortSelect.addEventListener('change', (e) => {
+	
+    currentSort = e.target.value;
+	[field, order] = currentSort.split("-");
+	orderBy= field
+	orderField=order
+	filterSortSearch(
+	      inputSearch,
+	      currentCategory === "all" ? "" : currentCategory,
+	      orderBy,
+	      orderField,
+	      currentPage,
+	      itemsPerPage
+	  );
+  });
+
+  // Sự kiện bộ lọc Danh Mục (Pills)
+  filterPills.addEventListener('click', (e) => {
+	const pill = e.target.closest(".pill");
+	if(!pill) return;
+	document.querySelectorAll('#filter-pills .pill')
+	        .forEach(p=> p.classList.remove("active"));
+	pill.classList.add("active");
+	
+	currentCategory = pill.dataset.category;
+	currentPage = 1;
+	console.log("currentCategory",currentCategory);
+	if(currentCategory === "all"){
+		loadPlantsFromServer(currentPage,itemsPerPage);
+	}else{
+		filterSortSearch(
+		            inputSearch,
+		            currentCategory,
+		            orderBy,
+		            orderField,
+		            currentPage,
+		            itemsPerPage
+		        );
+	}
+  });
+
+  // Sự kiện thay đổi View Giao diện (Grid / Table)
+  viewTableBtn.addEventListener('click', () => {
+    viewTableBtn.classList.add('active');
+    viewGridBtn.classList.remove('active');
+    currentView = 'table';
+    render();
+  });
+
+  viewGridBtn.addEventListener('click', () => {
+    viewGridBtn.classList.add('active');
+    viewTableBtn.classList.remove('active');
+    currentView = 'grid';
+    render();
+  });
+
+ 
+
+  // Đóng Modals
+  closeModalBtn.addEventListener('click', closeDetailModal);
+  detailModal.addEventListener('click', (e) => {
+    if (e.target === detailModal) closeDetailModal();
+  });
+  closeFormModalBtn.addEventListener("click", closeFormModal);
+  cancelFormBtn.addEventListener("click", closeFormModal);
+
+  // Khởi chạy ứng dụng lần đầu khi tải trang
+  loadAllCategory()
+loadPlantsFromServer(currentPage, itemsPerPage);

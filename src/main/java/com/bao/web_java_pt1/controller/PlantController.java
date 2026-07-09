@@ -41,8 +41,8 @@ public class PlantController {
 
 	@GetMapping("/")
 //	@Operation(summary = "Lấy danh sách tất cả các cây")
-	public ResponseEntity<List<PlantResponseAPI>> getAllPlant(){
-		return new ResponseEntity(plantService.getAllPlants(), HttpStatusCode.valueOf(200));
+	public ResponseEntity<List<PlantResponseAPI>> getAllPlant(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit  ){
+		return new ResponseEntity(plantService.getAllPlants(page,limit), HttpStatusCode.valueOf(200));
 	}
 	
 	@PostMapping("/")
@@ -71,9 +71,14 @@ public class PlantController {
 	@GetMapping("/search")
     public ResponseEntity<ListPlantResponseAPI> searchPlants(
             @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "category", required = false) String category) {
+            @RequestParam(value = "category", required = false) String category,
+            @RequestParam(value = "by", defaultValue = "name", required = false) String by,
+            @RequestParam(value="order", defaultValue ="asc", required = false ) String order,
+            @RequestParam(defaultValue = "1") int page, 
+            @RequestParam(defaultValue = "5") int limit  
+    		) {
         
-		ListPlantResponseAPI results = plantService.searchPlants(keyword, category);
+		ListPlantResponseAPI results = plantService.searchPlants(keyword, category, by, order, limit, page);
         return ResponseEntity.ok(results);
     }
 	

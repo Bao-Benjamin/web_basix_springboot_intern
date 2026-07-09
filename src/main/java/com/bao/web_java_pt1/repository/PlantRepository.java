@@ -19,8 +19,11 @@ public class PlantRepository {
 	public void insertPlant(Plant plant) {
 		plantMapper.insertPlant(plant);
 	}
-	public List<Plant> getAllPlants(){
-		return plantMapper.getAllPlants();
+	public List<Plant> getAllPlants(int size, int offset){
+		return plantMapper.getAllPlants(size, offset);
+	}
+	public long countAllPlants() {
+		return plantMapper.countAllPlants();
 	}
 	public Plant findPlantByName(String name) {
 		return plantMapper.findPlantByName(name);
@@ -31,8 +34,11 @@ public class PlantRepository {
 	public int deletePlant(String name) {
 		return plantMapper.deletePlant(name);
 	}
-	public List<Plant> searchPlants(String keyword, String category) {
-		return plantMapper.searchPlants(keyword, category);
+	public List<Plant> searchPlants(String keyword, String category, String sortedField, String sortedByField, int limit, int offset) {
+		return plantMapper.searchPlants(keyword, category,sortedField,sortedByField,limit, offset);
+	}
+	public long countSearchPlants(String keyword, String category) {
+		return plantMapper.countSearchPlants(keyword, category);
 	}
 	public List<Plant> getPlantsSorted(String by, String order){
 		return plantMapper.getPlantsSorted(by, order);

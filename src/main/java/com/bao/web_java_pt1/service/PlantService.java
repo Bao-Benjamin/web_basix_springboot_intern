@@ -37,7 +37,7 @@ public class PlantService {
 		plant.setDescription(request.getDescription());
 		plant.setPlantDate(request.getPlantDate());
 		Category category =
-				categoryRepository.findCategoryByID(request.getCategory());
+				categoryRepository.findCategoryByName(request.getCategory());
 		plant.setCategory(category);
 		plantRepository.insertPlant(plant);
 //		System.out.println(categories);
@@ -53,19 +53,25 @@ public class PlantService {
         PlantResponseAPI plantResponseAPI = new PlantResponseAPI();
         plantResponseAPI.setErrorCode(201);
         plantResponseAPI.setPlantDTO(response);
-
+        
         return plantResponseAPI;
 	}
-	public ListPlantResponseAPI getAllPlants() {
+	public ListPlantResponseAPI getAllPlants(int currentPage, int size) {
 	    List<PlantDTO> list = new ArrayList<>();
-	    for (Plant plant : plantRepository.getAllPlants()) {
+	    int offset = (currentPage -1) * size;
+	    for (Plant plant : plantRepository.getAllPlants(size, offset)) {
 	    	System.out.println("plant in loop: "+ plant);
 	        list.add(toPlantDTO(plant));
 	    }
+	    long totalPlant = plantRepository.countAllPlants();
+	    int totalPage = (int) Math.ceil((double) totalPlant/size);
 	    ListPlantResponseAPI response = new ListPlantResponseAPI();
 	    response.setPlantDTO(list);
 	    response.setMessageError("No Error");
 	    response.setErrorCode(200);
+	    response.setPage(currentPage);
+	    response.setTotalItems(totalPlant);
+	    response.setTotalPages(totalPage);
 	    return response;
 	}
 	public PlantResponseAPI findPlantByName(String name) {
@@ -79,8 +85,10 @@ public class PlantService {
 	
 	@Transactional
 	public PlantResponseAPI updatePlant(String name ,PlantRequest request) {
+		Category category = categoryRepository.findCategoryByName(name);
 //		Plant plant = plantRepository.findPlantByName(name);
 		Plant plantUpdate = toPlant(request);
+		
 		int result = plantRepository.updatePlant(name,plantUpdate);
 		PlantResponseAPI plantResponseAPI = new PlantResponseAPI();
 		if(result == 0) {
@@ -105,17 +113,29 @@ public class PlantService {
 		return plantResponseAPI;
 	}
 	
-	public ListPlantResponseAPI searchPlants(String keyword, String category) {
+	public ListPlantResponseAPI searchPlants(String keyword, String category, String sortedField, String sortedByField, 
+			int limit, int currentPage) {
 		List<PlantDTO> result = new ArrayList<>();
+		int offset = (currentPage -1) * limit;
 		ListPlantResponseAPI response = new ListPlantResponseAPI();
-		for(Plant plant : plantRepository.searchPlants(keyword, category)) {
+		System.out.println("list plant trong search:"+ plantRepository.searchPlants(keyword, category,sortedField,sortedByField, limit, offset));
+		for(Plant plant : plantRepository.searchPlants(keyword, category,sortedField,sortedByField, limit, offset)) {
 			PlantDTO plantDTO =  toPlantDTO(plant);
+			System.out.println("plant trong search: "+ plant.getName());
 			result.add(plantDTO);
 		}
+		long totalPlant = plantRepository.countSearchPlants(keyword, category);
+		int totalPage = (int) Math.ceil((double) totalPlant/limit);
 		response.setPlantDTO(result);
 		response.setErrorCode(200);
+		response.setPage(currentPage);
+		response.setTotalItems(totalPlant);
+		response.setTotalPages(totalPage);
 		return response;
+		
+		
 	}
+	
 	public ListPlantResponseAPI getPlantsSorted(String by, String order){
 		List<PlantDTO> result = new ArrayList<>();
 		for(Plant plant : plantRepository.getPlantsSorted(by,order)) {
@@ -168,7 +188,7 @@ public class PlantService {
 		plant.setDescription(request.getDescription());
 		plant.setPlantDate(request.getPlantDate());
 		Category category =
-				categoryRepository.findCategoryByID(request.getCategory());
+				categoryRepository.findCategoryByName(request.getCategory());
 		plant.setCategory(category);
 		return plant;
 	}

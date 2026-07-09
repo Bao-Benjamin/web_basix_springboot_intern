@@ -7,8 +7,9 @@ import com.bao.web_java_pt1.entity.Category;
 
 public class PlantResponseAPI {
 	private String messageError;
-	private PlantDTO plantDTO;
 	private int ErrorCode;
+	private PlantDTO plantDTO;
+	
 	public PlantResponseAPI(String messageError, PlantDTO plantDTO, int errorCode) {
 		super();
 		this.messageError = messageError;

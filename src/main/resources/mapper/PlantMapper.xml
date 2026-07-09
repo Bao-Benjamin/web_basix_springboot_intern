@@ -22,6 +22,12 @@
                c.id AS category_id, c.name AS category_name
         FROM plant p
         LEFT JOIN category c ON p.category_id = c.id
+        ORDER BY p.id DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    
+    <select id="countAllPlants" resultType="Long">
+    	SELECT COUNT(*) FROM plant
     </select>
 
     <select id="findPlantByID" resultMap="PlantResultMap">
@@ -77,7 +83,32 @@
         	</if>
         	
         </where>
+        ORDER BY 
+    	<choose>
+        <when test="sortByField != null and sortByField != ''">
+            ${sortByField} ${sortOrder}
+        </when>
+        <otherwise>
+            p.name ASC
+        </otherwise>
+    </choose>
+    	LIMIT #{limit} OFFSET #{offset}
     </select>
+    
+    <select id="countSearchPlants" parameterType="map" resultType="long">
+    SELECT COUNT(p.id)
+    FROM plant p
+    LEFT JOIN category c ON p.category_id = c.id
+    <where>
+        <if test="keyword != null and keyword != ''">
+            LOWER(p.name) LIKE LOWER(CONCAT('%', #{keyword}, '%'))
+        </if>
+        <if test="category != null and category != '' and category != 'all'">
+            AND LOWER(c.name) = LOWER(#{category})
+        </if>
+    </where>
+    </select>
+
     <select id="getPlantsSorted" resultMap="PlantResultMap">
         SELECT p.id, p.name, p.price, p.plant_date, p.img, p.quantity, p.description,
                c.id AS category_id, c.name AS category_name
@@ -121,8 +152,4 @@
 		order by p.created_at desc
 		limit 1
     </select>
-    
-    
-    
-
 </mapper>

@@ -4,8 +4,9 @@ import java.util.List;
 
 public class PlantStatResponseAPI {
 	private String messageError;
-	private PlantStatsDTO plantStatsDTO;
 	private int ErrorCode;
+	private PlantStatsDTO plantStatsDTO;
+	
 	
 	
 	public PlantStatResponseAPI() {

@@ -1,5 +1,7 @@
 package com.bao.web_java_pt1.repository;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +15,12 @@ public class CategoryRepository {
 	public Category findCategoryByID(int id) {
 		return categoryMapper.findCategoryByID(id);
 	};
+	
+	public Category findCategoryByName(String name) {
+		return categoryMapper.findCategoryByName(name);
+	};
+	public List<Category> getAllCategory(){
+		return categoryMapper.getAllCategory();
+	}
+	
 }
