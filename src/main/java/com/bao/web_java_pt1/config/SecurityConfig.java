@@ -10,41 +10,43 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	 @Bean
-	    SecurityFilterChain securityFilterChain(HttpSecurity http)
-	            throws Exception {
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-	        http
-	            .csrf(csrf -> csrf.disable())
+		http
+	    .csrf(csrf -> csrf.disable())
 
-	            .authorizeHttpRequests(auth -> auth
+	    .authorizeHttpRequests(auth -> auth
+	        .requestMatchers("/api/register","/api/plants/**").permitAll()
+	        .requestMatchers("/index.html","/index.js","/style.css", "/login.js","/login.html").permitAll()
+	        .requestMatchers("/admin/**").hasRole("ADMIN")
+	        .requestMatchers("/user/**").hasRole("USER")
+	        .anyRequest().authenticated()
+	    )
 
-	                .requestMatchers("/api/register")
-	                .permitAll()
+	    .formLogin(form -> form
+	        .successHandler((request, response, authentication) -> {
 
-	                .requestMatchers("/admin/**")
-	                .hasRole("ADMIN")
+	            if (authentication.getAuthorities().stream()
+	                    .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
 
-	                .requestMatchers("/user/**")
-	                .hasRole("USER")
+	                response.sendRedirect("/admin.html");
+	                return;
+	            }
+	            response.sendRedirect("/index.html");
+	        })
+	        .permitAll()
+	    )
 
-	                .anyRequest()
-	                .authenticated()
+	    .logout(logout -> logout
+	        .logoutUrl("/logout")
+	        .logoutSuccessUrl("/login?logout")
+	        .invalidateHttpSession(true)
+	        .clearAuthentication(true)
+	        .deleteCookies("JSESSIONID")
+	        .permitAll()
+	    );
 
-	            )
-
-	            .formLogin(form -> form
-	            		
-	            		.successHandler(((request,response,authentication)->{
-	            	if(authentication.getAuthorities().stream()
-	            			.anyMatch(auth->auth.getAuthority().equals("ROLE_USER"))) {
-	            		response.sendRedirect("/admin.html"); 
-	            		return ; 
-	            		}
-	            	
-	            }))
-	            		.permitAll());
-	        	
-	        return http.build();
-	    }
+	return http.build();
+	}
 }

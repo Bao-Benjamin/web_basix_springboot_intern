@@ -21,7 +21,7 @@ public class UserService {
 	public int createUser(UserRequest userRequest) {
 		userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 
-		int result = userRepository.createUser(userRequest.getUsername(), userRequest.getPassword(), Roles.ROLE_AMIN);
+		int result = userRepository.createUser(userRequest.getUsername(), userRequest.getPassword(), Roles.ROLE_USER);
 		return result;	
 	}
 	public UserDTO findByUsername(UserRequest userRequest) {

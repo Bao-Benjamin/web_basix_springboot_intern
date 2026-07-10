@@ -38,7 +38,7 @@ const getAllCateAPI = 'http://localhost:8084/category';
   const addBtn = document.querySelector("#add-btn");
   const closeFormModalBtn = document.getElementById("close-form-modal");
   const cancelFormBtn = document.getElementById("cancel-form");
-  
+  const btnLogout = document.getElementById('btn-logout');
   let plants = []
   let oldPlantName = "";
   let backendCurrentPage = 1;
@@ -553,6 +553,46 @@ function filterSortSearch(keyword, category, orderBy, fieldName, page = 1, limit
   closeFormModalBtn.addEventListener("click", closeFormModal);
   cancelFormBtn.addEventListener("click", closeFormModal);
 
-  // Khởi chạy ứng dụng lần đầu khi tải trang
+  function checkAuthDOM() {
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      const guestElements = document.querySelectorAll('.auth-guest');
+      const userElements = document.querySelectorAll('.auth-user');
+
+      if (isLoggedIn) {
+          // Đã đăng nhập: Ẩn Đăng ký/Đăng nhập, Hiện Đăng xuất
+          guestElements.forEach(el => el.style.display = 'none');
+          userElements.forEach(el => el.style.display = 'inline-block');
+      } else {
+          // Chưa đăng nhập: Hiện Đăng ký/Đăng nhập, Ẩn Đăng xuất
+          guestElements.forEach(el => el.style.display = 'inline-block');
+          userElements.forEach(el => el.style.display = 'none');
+      }
+  }
+
+  // Lắng nghe sự kiện bấm nút Đăng xuất
+  if (btnLogout) {
+      btnLogout.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          if (confirm("Bạn có chắc chắn muốn đăng xuất không?")) {
+              fetch('http://localhost:8084/logout', {
+                  method: 'POST'
+              })
+              .then(() => {
+                  // Đăng xuất thành công -> Xóa cờ và đẩy về trang login
+                  localStorage.removeItem("isLoggedIn");
+                  window.location.href = './login.html?logout';
+              })
+              .catch(error => {
+                  console.error('Lỗi khi đăng xuất:', error);
+                  alert('Không thể kết nối đến server để đăng xuất.');
+              });
+          }
+      });
+  }
+
+  // Khởi chạy quét giao diện ngay khi tải trang chủ index.html
+  checkAuthDOM();
+  
   loadAllCategory()
 loadPlantsFromServer(currentPage, itemsPerPage);

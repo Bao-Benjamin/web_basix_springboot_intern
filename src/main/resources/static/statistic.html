@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Plant Manager</title>
+	<link rel="stylesheet" href="./statistic.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+	<nav>
+	  <div class="nav-brand"><span>🌿</span> Plant Manager</div>
+	  <a href="./admin.html">🔢 Trang chủ</a>
+	</nav>
+	<div class="dashboard-container">
+		<h2 class="dashboard-title"><i class="fa-solid fa-chart-pie"></i> Bảng Thống Kê Cây Trồng</h2>
+		
+		<div class="stats-overview">
+			<div class="stat-card total-plants">
+				<div class="card-icon">
+					<i class="fa-solid fa-seedling"></i>
+				</div>
+				<div class="card-info">
+					<h3>Tổng số cây quản lý</h3>
+					<p class="stat-number" id="total-plants">1,250</p>
+				</div>
+			</div>
+
+			<div class="stat-card latest-plant">
+				<div class="card-icon">
+					<i class="fa-solid fa-clock-rotate-left"></i>
+				</div>
+				<div class="card-info">
+					<h3>Cây thêm gần nhất</h3>
+					<p class="plant-name" id="latest-plant-name">Cây Kim Tiền</p>
+					<span class="plant-time" id="latest-plant-time">Vừa xong (10:45)</span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="category-stats-section">
+			<h3><i class="fa-solid fa-list"></i> Số lượng theo từng danh mục</h3>
+			<table class="category-table">
+				<thead>
+					<tr>
+						<th>Tên danh mục</th>
+						<th>Số lượng</th>
+						<th>Tỷ lệ</th>
+					</tr>
+				</thead>
+				<tbody id="categoryTableBody">
+					
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="chart-container">
+		    <canvas id="categoryChart"></canvas>
+		</div>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="./statistic.js" ></script>
+</body>
