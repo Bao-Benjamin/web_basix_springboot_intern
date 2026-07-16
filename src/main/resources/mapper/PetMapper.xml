@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="training.javaweb.exam.JavaWebExam_lhgbao.mapper.PetMapper">
+
+
+	<select id="getByOwnerId"
+		resultType="training.javaweb.exam.JavaWebExam_lhgbao.entities.Pet">
+		select * from pets where owner_id = #{ownerId}
+	</select>
+
+	<insert id="addPet">
+		insert into pets (name, age ,owner_id, type, weight, breed) values
+		(
+		#{name},
+		#{age},
+		#{ownerId},
+		#{type},
+		#{weight},
+		#{breed},
+		)
+	</insert>
+	<select id="getAllPets"
+		resultType="training.javaweb.exam.JavaWebExam_lhgbao.entities.Pet">
+		select *
+		from pets p
+	</select>
+	<update id="updatePet" parameterType="map"> 
+    update pets 
+    <set>
+        <if test="pet.name != null and pet.name != ''">name = #{pet.name},</if>
+        <if test="pet.age != null">age = #{pet.age},</if>
+        <if test="pet.ownerId != null">owner_id = #{pet.ownerId},</if>
+        <if test="pet.type != null">type = #{pet.type},</if>
+        <if test="pet.weight != null">weight = #{pet.weight},</if>
+        <if test="pet.species != null">species = #{pet.breed},</if>
+        <if test="pet.image != null">image_url = #{pet.image},</if>
+    </set>
+    where id = #{id}
+	</update>
+	<select id="getPetById" resultType="training.javaweb.exam.JavaWebExam_lhgbao.entities.Pet">
+		select * from pets
+		where id= #{id}
+	</select>
+	<delete id="deletePet">
+	 	delete from pets where id= #{id};
+	</delete>
+	<select id="filterByType" resultType="training.javaweb.exam.JavaWebExam_lhgbao.entities.Pet">
+		select * from pets
+		where type = #{type}
+	</select>
+	<select id="findPetByOwner" resultType = "training.javaweb.exam.JavaWebExam_lhgbao.entities.Pet">
+		 select * from pets
+		 where owner_id = #{owner_Id}
+	</select>
+	
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="training.javaweb.exam.JavaWebExam_lhgbao.mapper.BoardingRecordMapper">
+	<insert id="createBoardingRecord">
+		insert into boarding_records (pet_id,check_in_date, expected_check_out, base_fee, total_fee, notes  )
+		values (
+			#{petId},
+			#{checkInDate},
+			#{expectedReturnDate},
+			#{baseFee},
+			#{totalFee},
+			#{notes}
+			
+		)
+	</insert>	
+	<select id="getAllBoardingRecord" resultType="training.javaweb.exam.JavaWebExam_lhgbao.entities.BoardingRecord">
+		select *
+		from boarding_records
+	</select>
+	<update id="checkout">
+		update boarding_records
+		<set>
+			<if test="actualCheckoutDay != null">actual_check_out= #{actualCheckoutDay},</if>
+			<if test="lateFee != null and lateFee != 0 ">late_fee= #{lateFee},</if>
+			<if test="totalFee != null and totalFee != 0">total_fee=#{totalFee},</if>
+			status = "RETURNED"
+		</set>
+		where id = #{recordId}
+	</update>
+	<select id="getBoardingRecordById" resultType="training.javaweb.exam.JavaWebExam_lhgbao.entities.BoardingRecord">
+		select * from boarding_records where id = #{id}
+	</select>
+	<select id="getBoardingStatusRecords" resultType="training.javaweb.exam.JavaWebExam_lhgbao.entities.BoardingRecord">
+		select * from boarding_records where status = "BOARDING";
+	</select>
+	<select id="getRecordByPetId" resultType ="training.javaweb.exam.JavaWebExam_lhgbao.entities.BoardingRecord">
+		select * from boarding_records where pet_id = #{petId}
+	</select>
+	<select id="getRecordByOwnerId" resultType="training.javaweb.exam.JavaWebExam_lhgbao.entities.BoardingRecord" >
+	SELECT 
+    	r.*, 
+    	p.name,
+    	p.id, 
+    	o.name,
+    	o.phone,
+    	o.id 
+	FROM boarding_records r
+	INNER JOIN pets p ON r.pet_id = p.id
+	INNER JOIN owners o ON p.owner_id = o.id
+	WHERE  
+    	o.id = #{ownerId};
+	</select>
+	<select id="getRecordByTime" resultType="training.javaweb.exam.JavaWebExam_lhgbao.entities.BoardingRecord">
+		select * from boarding_records 
+		where created_at between #{start} and #{end}
+	</select>
+</mapper>

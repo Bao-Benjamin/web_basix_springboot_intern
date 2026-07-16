@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="training.javaweb.exam.JavaWebExam_lhgbao.mapper.OwnerMapper">
+	<select id="getAllOwners"
+		resultType="training.javaweb.exam.JavaWebExam_lhgbao.entities.Owner">
+		SELECT * FROM owners;
+	</select>
+	<insert id="addOwner">
+		INSERT INTO owners (name, phone, email, address) VALUES
+		(
+		#{name}, #{phone}, #{email}, #{address}
+		)
+	</insert>
+	<select id="getOwnerById" resultType="training.javaweb.exam.JavaWebExam_lhgbao.entities.Owner">
+	  select * from owners where id = #{id}
+	</select>
+	<update id="updateOwner"> Update owners 
+		<set>
+			<if test="name != null and name != ''">name = #{name},</if>
+			<if test="phoneNumber != null and phoneNumber != ''">phone = #{phoneNumber},</if>
+			<if test="email != null">email = #{email},</if>
+			<if test="address != null">address = #{address}</if>
+			<if test="had_account != null">had_Account = #{had_account}</if>
+		</set>
+		WHERE id = #{id_owner}
+	</update>
+	<select id="searchByNameOrPhone" resultType="training.javaweb.exam.JavaWebExam_lhgbao.entities.Owner">
+		 SELECT * FROM owners 
+		 WHERE name LIKE CONCAT('%', #{keyword}, '%') OR phone LIKE CONCAT('%', #{keyword}, '%') 
+	</select>
+	<delete id="deleteOwner">
+		delete from owners
+		where id = #{id_owner}
+	</delete>
+</mapper>

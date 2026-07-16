@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="training.javaweb.exam.JavaWebExam_lhgbao.mapper.CareNoteMapper">
+	<insert id="addNote">
+		insert into care_notes (boarding_record_id, note) 
+		values 
+		(
+			#{boardingId},
+			#{note}
+		)
+	</insert>
+	<select id="getNoteByOwnerId" resultType="training.javaweb.exam.JavaWebExam_lhgbao.dto.response.NoteByEachOwnerResponse">
+		select  c.id, c.boarding_record_id, c.note, p.id as pet_id, p.name as pet_name, p.type , o.id as owner_id, o.name as owner_name 
+		from care_notes c
+		inner join boarding_records b on c.boarding_record_id = b.id
+		inner join pets p ON b.pet_id = p.id
+		inner join owners o ON p.owner_id = o.id
+		where boarding_record_id = #{ownerId}
+	</select>
+	<select id="getNoteByRecordId" resultType="training.javaweb.exam.JavaWebExam_lhgbao.dto.response.CareNoteResponse">
+		select * from care_notes
+		where boarding_record_id = #{recordId}
+	</select>
+</mapper>
