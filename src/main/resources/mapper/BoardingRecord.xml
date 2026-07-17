@@ -31,6 +31,20 @@
 	<select id="getBoardingRecordById" resultType="training.javaweb.exam.JavaWebExam_lhgbao.entities.BoardingRecord">
 		select * from boarding_records where id = #{id}
 	</select>
+	<select id="getRecordDetailById" resultType="training.javaweb.exam.JavaWebExam_lhgbao.entities.BoardingRecord" >
+	SELECT 
+    	r.*, 
+    	p.name,
+    	p.id, 
+    	o.name,
+    	o.phone,
+    	o.id 
+	FROM boarding_records r
+	INNER JOIN pets p ON r.pet_id = p.id
+	INNER JOIN owners o ON p.owner_id = o.id
+	WHERE  
+    	r.id = #{id};
+	</select>
 	<select id="getBoardingStatusRecords" resultType="training.javaweb.exam.JavaWebExam_lhgbao.entities.BoardingRecord">
 		select * from boarding_records where status = "BOARDING";
 	</select>

@@ -19,6 +19,7 @@ public interface BoardingRecordMapper {
 	
 	int checkout(@Param("actualCheckoutDay") LocalDate actualCheckoutDay, @Param("lateFee") double lateFee, @Param("totalFee") double totalFee, @Param("recordId") int id);
 	BoardingRecord getBoardingRecordById(@Param("id") int id);
+	BoardingRecord getRecordDetailById(@Param("id") int id);
 	List<BoardingRecord> getBoardingStatusRecords();
 	List<BoardingRecord> getRecordByPetId(@Param("petId") int id);
 	List<BoardingRecord> getRecordByOwnerId(@Param("ownerId") int id);

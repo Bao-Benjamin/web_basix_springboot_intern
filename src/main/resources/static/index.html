@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare Dashboard - Hệ Thống Quản Lý Thú Cưng</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome cho các Icon ấn tượng -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo-section">
+                <div class="logo-icon"><i class="fa-solid fa-paw"></i></div>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="dashboard" title="Tổng quan"><i class="fa-solid fa-chart-pie"></i></button>
+                <button class="nav-item" data-tab="owners" title="Chủ nuôi"><i class="fa-solid fa-user-group"></i></button>
+                <button class="nav-item" data-tab="pets" title="Thú cưng"><i class="fa-solid fa-dog"></i></button>
+                <button class="nav-item" data-tab="tickets" title="Phiếu gửi"><i class="fa-solid fa-receipt"></i></button>
+                <button class="nav-item" data-tab="my-pets" title="Thú cưng của tôi"><i class="fa-solid fa-paw"></i></button>
+            </nav>
+            <div class="profile-section">
+                <div class="avatar-fallback">AD</div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="main-content">
+            
+            <!-- TAB 1: DASHBOARD -->
+            <section id="dashboard" class="tab-panel active">
+                <div class="header-action">
+                    <div>
+                        <h1>Dashboard</h1>
+                        <p class="subtitle">Tổng quan</p>
+                    </div>
+                    <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Tạo phiếu gửi</button>
+                </div>
+
+                <!-- Kpi Grid -->
+                <div class="kpi-grid">
+                    
+                </div>
+
+                <!-- Split Layout -->
+                <div class="dashboard-layout">
+                    <!-- Left: Recent Tickets -->
+                    <div class="card layout-left">
+                        <div class="card-header">
+                            <h3>Phiếu gửi gần đây <span class="counter-badge" id="recent-count">5</span></h3>
+                            <div class="filter-group">
+                                <button class="filter-btn active">Tất cả</button>
+                                <button class="filter-btn">Đang gửi</button>
+                                <button class="filter-btn">Đã trả</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>THÚ CƯNG</th>
+                                        <th>CHỦ NUÔI</th>
+                                        <th>CHECK-IN</th>
+                                        <th>TRẠNG THÁI</th>
+                                        <th>PHÍ</th>
+                                        <th>THAO TÁC</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboard-tickets-tbody">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Right: Charts & Distribution -->
+                    <div class="layout-right">
+                        <!-- Mini Chart Box -->
+                        <div class="card chart-card">
+                            <div class="chart-header">
+                                <div>
+                                    <h4>Doanh thu 2025</h4>
+                                    <p class="chart-total">25.370.000đ</p>
+                                </div>
+                            </div>
+                            <!-- Fake Bar Chart using CSS Grid -->
+                            <div class="fake-chart">
+                                <div class="bar" style="height: 20%" data-month="T1"></div>
+                                <div class="bar" style="height: 35%" data-month="T2"></div>
+                                <div class="bar" style="height: 50%" data-month="T3"></div>
+                                <div class="bar" style="height: 40%" data-month="T4"></div>
+                                <div class="bar" style="height: 65%" data-month="T5"></div>
+                                <div class="bar" style="height: 75%" data-month="T6"></div>
+                                <div class="bar" style="height: 60%" data-month="T7"></div>
+                                <div class="bar" style="height: 85%" data-month="T8"></div>
+                                <div class="bar" style="height: 55%" data-month="T9"></div>
+                                <div class="bar" style="height: 90%" data-month="T10"></div>
+                                <div class="bar" style="height: 45%" data-month="T11"></div>
+                                <div class="bar active" style="height: 100%" data-month="T12"></div>
+                            </div>
+                        </div>
+
+                        <!-- Species Distribution -->
+                        <div class="card distribution-card">
+                            <div class="card-header">
+                                <h3>Phân bố loài</h3>
+                            </div>
+                            <div class="distribution-list" id="distribution-container">
+                                <!-- Dynamic progress bars -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: OWNERS -->
+            <section id="owners" class="tab-panel">
+                <div class="header-action">
+                    <div>
+                        <h1>Chủ nuôi</h1>
+                        <p class="subtitle">Tất cả <span id="owners-total-count">6</span></p>
+                    </div>
+                    <div class="search-action-group">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Tìm tên, SĐT...">
+                        </div>
+                        <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Thêm chủ nuôi</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>HỌ TÊN <i class="fa-solid fa-arrows-up-down sorting-icon"></i></th>
+                                <th>ĐIỆN THOẠI</th>
+                                <th>EMAIL</th>
+                                <th>THÚ CƯNG</th>
+                                <th>TÀI KHOẢN</th>
+                                <th>THAO TÁC</th>
+                            </tr>
+                        </thead>
+                        <tbody id="owners-tbody"></tbody>
+                    </table>
+                    <div class="pagination" id="owners-pagination"></div>
+                </div>
+            </section>
+
+            <!-- TAB 3: PETS -->
+            <section id="pets" class="tab-panel">
+                <div class="header-action">
+                    <div>
+                        <h1>Thú cưng</h1>
+                        <div class="species-filters" id="pets-species-tags">
+                            <!-- Dynamic tags like Tất cả, Dog, Cat... -->
+                        </div>
+                    </div>
+                    <div class="search-action-group">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Tìm tên thú cưng...">
+                        </div>
+                        <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Thêm thú cưng</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>THÚ CƯNG <i class="fa-solid fa-arrows-up-down sorting-icon"></i></th>
+                                <th>LOẠI</th>
+                                <th>GIỐNG</th>
+                                <th>TUỔI</th>
+                                <th>CÂN NẶNG</th>
+                                <th>CHỦ NUÔI</th>
+                                <th>TRẠNG THÁI</th>
+                                <th>THAO TÁC</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pets-tbody"></tbody>
+                    </table>
+                    <div class="pagination" id="pets-pagination"></div>
+                </div>
+            </section>
+
+            <!-- TAB 4: TICKETS -->
+            <section id="tickets" class="tab-panel">
+                <div class="header-action">
+                    <div>
+                        <h1>Phiếu gửi</h1>
+                        <div class="species-filters">
+                            <button class="filter-btn active">Tất cả <span>7</span></button>
+                            <button class="filter-btn">Đang gửi <span>3</span></button>
+                            <button class="filter-btn">Đã trả <span>4</span></button>
+                        </div>
+                    </div>
+                    <div class="search-action-group">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Tìm thú cưng, chủ nuôi...">
+                        </div>
+                        <div class="date-picker-group">
+                            <input type="date" value="2025-05-20">
+                            <span>➔</span>
+                            <input type="date" value="2025-05-22">
+                        </div>
+                        <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Tạo phiếu</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>THÚ CƯNG</th>
+                                <th>CHỦ NUÔI</th>
+                                <th>CHECK-IN</th>
+                                <th>THỰC TẾ TRẢ</th>
+                                <th>TỔNG PHÍ</th>
+                                <th>TRẠNG THÁI</th>
+                                <th>THAO TÁC</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tickets-tbody"></tbody>
+                    </table>
+                    <div class="pagination" id="tickets-pagination"></div>
+                </div>
+            </section>
+
+            <!-- TAB 5: MY PETS (Khách xem hàng) -->
+            <section id="my-pets" class="tab-panel">
+                <div class="header-action">
+                    <div>
+                        <h1>Thú cưng của tôi</h1>
+                        <div class="species-filters">
+                            <button class="filter-btn active">Tất cả <span>2</span></button>
+                        </div>
+                    </div>
+                    <div class="search-action-group">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Tìm theo tên...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thẻ Kpi nội bộ -->
+                <div class="kpi-grid internal-kpi">
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div class="kpi-icon icon-orange"><i class="fa-solid fa-paw"></i></div>
+                            <span class="badge badge-neutral">Của tôi</span>
+                        </div>
+                        <h2>2</h2>
+                        <label>THÚ CƯNG</label>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div class="kpi-icon icon-blue"><i class="fa-solid fa-truck-fast"></i></div>
+                            <span class="badge badge-active">Active</span>
+                        </div>
+                        <h2>1</h2>
+                        <label>ĐANG GỬI</label>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div class="kpi-icon icon-purple"><i class="fa-solid fa-history"></i></div>
+                        </div>
+                        <h2>3</h2>
+                        <label>LƯỢT GỬI</label>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="species-filters mb-3">
+                        <button class="filter-btn active">Tất cả</button>
+                        <button class="filter-btn"><i class="fa-solid fa-dog"></i> Dog</button>
+                        <button class="filter-btn"><i class="fa-solid fa-cat"></i> Cat</button>
+                        <button class="filter-btn"><i class="fa-solid fa-kiwi-bird"></i> Bird</button>
+                        <button class="filter-btn"><i class="fa-solid fa-carrot"></i> Rabbit</button>
+                        <button class="filter-btn"><i class="fa-solid fa-ellipsis"></i> Other</button>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>THÚ CƯNG</th>
+                                <th>LOẠI</th>
+                                <th>GIỐNG</th>
+                                <th>TUỔI</th>
+                                <th>CÂN NẶNG</th>
+                                <th>TRẠNG THÁI</th>
+                                <th>THAO TÁC</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mypets-tbody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

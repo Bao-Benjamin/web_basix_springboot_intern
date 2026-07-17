@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import training.javaweb.exam.JavaWebExam_lhgbao.apiFormat.APIReponse;
 import training.javaweb.exam.JavaWebExam_lhgbao.dto.request.BoardingRecordRequest;
+import training.javaweb.exam.JavaWebExam_lhgbao.dto.response.BoardingRecordDetailResponse;
 import training.javaweb.exam.JavaWebExam_lhgbao.dto.response.BoardingRecordResponse;
 import training.javaweb.exam.JavaWebExam_lhgbao.dto.response.CheckoutResponse;
 import training.javaweb.exam.JavaWebExam_lhgbao.service.BoardingRecordService;
@@ -49,5 +50,9 @@ public class BoardingRecordController {
 	@GetMapping("/admin/get-record-by-time/")
 	public ResponseEntity<APIReponse<List<BoardingRecordResponse>>> getRecordByOwnerId(@RequestParam LocalDate start, @RequestParam LocalDate end){
 		return ResponseEntity.status(200).body(new APIReponse(200, "Get all records by Pet's Id ", boardingRecordService.getRecordByTime(start, end)));
+	}
+	@GetMapping("admin/get-record-detail/{id}")
+	public ResponseEntity<APIReponse<BoardingRecordDetailResponse>> getRecordDetailById(@PathVariable int id){
+		return ResponseEntity.status(200).body(new APIReponse(200, "Get all records by Pet's Id ", boardingRecordService.getRecordDetailById(id)));
 	}
 }

@@ -12,15 +12,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import tools.jackson.databind.ext.javatime.deser.LocalDateTimeDeserializer;
 import training.javaweb.exam.JavaWebExam_lhgbao.dto.request.BoardingRecordRequest;
+import training.javaweb.exam.JavaWebExam_lhgbao.dto.response.BoardingRecordDetailResponse;
 import training.javaweb.exam.JavaWebExam_lhgbao.dto.response.BoardingRecordResponse;
+import training.javaweb.exam.JavaWebExam_lhgbao.dto.response.CareNoteResponse;
 import training.javaweb.exam.JavaWebExam_lhgbao.dto.response.CheckoutResponse;
+import training.javaweb.exam.JavaWebExam_lhgbao.dto.response.NoteByEachOwnerResponse;
 import training.javaweb.exam.JavaWebExam_lhgbao.entities.AdminSetting;
 import training.javaweb.exam.JavaWebExam_lhgbao.entities.BoardingRecord;
+import training.javaweb.exam.JavaWebExam_lhgbao.entities.CareNote;
 import training.javaweb.exam.JavaWebExam_lhgbao.entities.Owner;
 import training.javaweb.exam.JavaWebExam_lhgbao.entities.Pet;
 import training.javaweb.exam.JavaWebExam_lhgbao.enums.status.BoardingStatus;
 import training.javaweb.exam.JavaWebExam_lhgbao.repository.AdminSettingRepository;
 import training.javaweb.exam.JavaWebExam_lhgbao.repository.BoardingRecordRepository;
+import training.javaweb.exam.JavaWebExam_lhgbao.repository.CareNoteRepository;
 import training.javaweb.exam.JavaWebExam_lhgbao.repository.OwnerRepository;
 import training.javaweb.exam.JavaWebExam_lhgbao.repository.PetRepository;
 
@@ -34,6 +39,8 @@ public class BoardingRecordService {
 	OwnerRepository ownerRepository;
 	@Autowired
 	PetRepository petRepository;
+	@Autowired
+	CareNoteRepository careNoteRepository;
 	
 	@Transactional
 	public int createBoardingRecord(BoardingRecordRequest request) throws Exception {
@@ -50,6 +57,20 @@ public class BoardingRecordService {
 			list.add(toBoardingRecordResponse(boardingRecord));
 		}
 		return list;
+	}
+	public List<BoardingRecordResponse> getRecordById(int id){
+		List<BoardingRecordResponse> list = new ArrayList<>();
+		for (BoardingRecord boardingRecord : boardingRecordRepository.getRecordByOwnerId(id)) {
+			list.add(toBoardingRecordResponse(boardingRecord));
+		}
+		return list;
+	}
+	public BoardingRecordDetailResponse getRecordDetailById(int id) {
+		BoardingRecord record = boardingRecordRepository.getRecordDetailById(id);
+		Pet pet = petRepository.getPetById(record.getPetId());
+		Owner owner = ownerRepository.getOwnerById(pet.getOwnerId());
+		List<CareNoteResponse> notes = careNoteRepository.getNoteByRecordId(id); 
+		return new BoardingRecordDetailResponse(record.getId(), pet.getName(), owner.getName(), record.getCheckInDate(), record.getExpectedCheckout(), record.getActualCheckout(), record.getLateFee(), record.getTotalFee(), record.getStatus(), notes);
 	}
 	@Transactional
 	public CheckoutResponse checkout(LocalDate actualCheckoutDay, int id) throws Exception {
@@ -93,6 +114,7 @@ public class BoardingRecordService {
 		}
 		return list;
 	}
+	
 	private BoardingRecordResponse toBoardingRecordResponse(BoardingRecord boardingRecord) {
 		Pet pet = petRepository.getPetById(boardingRecord.getPetId()); 
 		Owner owner = ownerRepository.getOwnerById(pet.getOwnerId());

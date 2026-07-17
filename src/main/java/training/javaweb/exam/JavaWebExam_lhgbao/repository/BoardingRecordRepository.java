@@ -29,6 +29,9 @@ public class BoardingRecordRepository {
 	public BoardingRecord getBoardingRecordById(int id) {
 		return boardingRecordMapper.getBoardingRecordById(id);
 	}
+	public BoardingRecord getRecordDetailById(int id) {
+		return boardingRecordMapper.getRecordDetailById(id);
+	}
 	public List<BoardingRecord> getBoardingStatusRecords(){
 		return boardingRecordMapper.getBoardingStatusRecords();
 	}
